@@ -265,9 +265,16 @@ img {
 /* --- Navbar --- */
 
 .navbar-custom {
-  background-color: var(--navbar-col);
-  border-bottom: 1px solid var(--navbar-border-col);
+  background-color: #F5F7FA;
+  border-bottom: 1px solid #E2E8F0;
   font-family: var(--header-font);
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+  min-height: 60px !important;
+  padding: 0 20px !important;
 
     {
     % if site.navbar-img %
@@ -337,12 +344,16 @@ img {
 }
 
 .navbar-custom .navbar-brand {
-  font-weight: 800;
+  font-weight: 700;
   color: #00008B !important;
 }
 
 .navbar-custom .navbar-nav .nav-link {
-  font-weight: 800;
+  font-weight: 600;
+  color: #333333 !important;
+}
+
+.navbar-custom .navbar-nav .nav-link:hover {
   color: #165DFF !important;
 }
 
