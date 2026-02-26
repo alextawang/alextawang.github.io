@@ -20,7 +20,7 @@ author: Tacom
 ###############################################
 
 navbar-links:
-  Industries: "/#part1"
+  Industries: "/industries"
   Solutions: "/#solutions"
   News: "/#part3"
   About us: "/about"
