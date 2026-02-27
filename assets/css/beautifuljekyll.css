@@ -111,7 +111,8 @@ html {
 
 body {
   font-family: var(--body-font);
-  font-size: 1.125rem;
+  /* reduced base font size for smaller overall text */
+  font-size: 1rem;
   color: var(--text-col);
   position: relative;
   background-color: var(--page-col);
