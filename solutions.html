@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TACOM | Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #020617;
+            --surface-1: #0F172A;
+            --surface-2: #1E293B;
+            --primary-glow: #60A5FA;
+            --accent-telecom: #FB7185;
+            --text-prose: #F8FAFC;
+            --text-dim: #94A3B8;
+            --glass: 1px solid rgba(255,255,255,0.08);
+            --shadow-glow: 0 0 15px rgba(96,165,250,0.2);
+            --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
+            --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background-color: var(--bg-base);
+            color: var(--text-prose);
+            font-family: var(--font-primary);
+            line-height: 1.6;
+        }
+        h1, h2, .mono { font-family: var(--font-mono); }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            padding: 20px 0;
+            border-bottom: var(--glass);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav a { color: var(--text-prose); text-decoration: none; margin-left: 20px; }
+        .menu-button { display: none; background: none; border: none; font-size: 24px; color: var(--text-prose); }
+        .mobile-nav { position: fixed; top: 0; right: -100%; width: 90%; height: 100%; background: var(--surface-1); backdrop-filter: blur(12px); transition: right 0.3s ease; padding: 40px 20px; display: flex; flex-direction: column; }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav a { margin: 12px 0; }
+        @media (max-width: 768px) {
+            .menu-button { display: block; }
+            .desktop-nav { display: none; }
+        }
+        .solutions-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 24px; padding: 40px 0; }
+        .card { background: var(--surface-1); border: var(--glass); border-radius: 12px; padding: 24px; position: relative; transition: all var(--transition-fast); }
+        .card:hover { border-color: var(--primary-glow); box-shadow: var(--shadow-glow); transform: translateY(-4px); }
+        .card .spec { font-family: var(--font-mono); font-size: 0.875rem; color: var(--text-dim); position: absolute; bottom: 16px; right: 16px; }
+        footer { background: var(--surface-1); padding: 24px 0; text-align: center; font-size:0.9rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; font-size:24px;">TACOM</div>
+            <button class="menu-button" id="menuBtnSol">☰</button>
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="solutions.html">Solutions</a>
+                <a href="cases.html">Cases</a>
+                <a href="news.html">News</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+        <nav class="mobile-nav" id="mobileNavSol">
+            <a href="index.html">Home</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="cases.html">Cases</a>
+            <a href="news.html">News</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Our Core Solutions</h1>
+        <div class="solutions-grid">
+            <div class="card">
+                <h2>System Integration</h2>
+                <p>Unified infrastructure for network engineering and server deployment.</p>
+                <div class="spec">Tech spec: v1.2</div>
+            </div>
+            <div class="card">
+                <h2>Cybersecurity</h2>
+                <p>Defensive engineering with Level 3 Protection standards.</p>
+                <div class="spec">Tech spec: v2.0</div>
+            </div>
+            <div class="card">
+                <h2>Cloud Computing</h2>
+                <p>Hybrid architectures designed for infinite scalability.</p>
+                <div class="spec">Tech spec: v3.1</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('menuBtnSol').addEventListener('click', function(){
+            document.getElementById('mobileNavSol').classList.toggle('open');
+        });
+    </script>
+    <footer>
+        <div class="container">
+            &copy; 2026 TACOM. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>

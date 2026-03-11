@@ -1,0 +1,56 @@
+TACOM Website Generation Blueprint
+Project Name: TACOM 2026 Redesign
+
+Tech Stack: HTML5, CSS3 (Modern Flex/Grid), Vanilla JavaScript
+
+Design Aesthetic: Dark Mode, Engineering HUD, High-Tech Professional
+
+1. File Structure Requirement
+Plaintext
+/tacom-project
+├── index.html          # Main Landing Page
+├── solutions.html      # Detailed Services Page
+├── cases.html          # Classic Projects Archive
+├── news.html           # Technical Intelligence Feed
+├── about.html          # Company History & Stats
+├── contact.html        # Triage Contact Form
+└── assets/             # Folder for SVG icons and Logo
+2. Global Design System (CSS Variables)
+Apply these to a :root selector in a global <style> tag:
+
+Backgrounds: --bg-base: #020617;, --surface-1: #0F172A;, --surface-2: #1E293B;
+
+Accents: --primary-glow: #60A5FA;, --accent-telecom: #FB7185;
+
+Typography: Primary: Inter; Monospace (Data/Labels): JetBrains Mono
+
+Borders: --glass: 1px solid rgba(255, 255, 255, 0.08);
+
+3. Page-Specific Requirements
+A. Home Page (index.html)
+Hero Section: Centered text. Headline: "Leading the World Through Digital Technology". Sub-headline: "Expert Software/Hardware Outsourcing and Telecom Engineering".
+
+Stats Bar: Include four counters: 20+ Years Experience, 500+ Clients, 98% Satisfaction, 24/7 Support.
+
+Client Slider: Grayscale-to-color icons for China Unicom, Motorola, Nokia, and MetLife.
+
+B. Solutions Page (solutions.html)
+Grid Layout: 3-column layout featuring System Integration, Cybersecurity, and Cloud Computing.
+
+Detail Cards: Each card needs a "Technical Spec" footer in JetBrains Mono.
+
+C. Classic Cases (cases.html)
+Impact Metrics: For each case (e.g., Manufacturing IT Upgrade or Medical Cloud Migration), include a visual progress bar or gauge showing 99.99% Continuity.
+
+D. News Feed (news.html)
+Intelligence Log: Cards for SpaceX IPO Updates and AI Dynamic Reports. Use a "Terminal Log" style with timestamps.
+
+E. Contact Form (contact.html)
+Technical Triage: A dropdown to select between System Integration and Telecom Engineering to route leads to alexwang@shtacom.com.
+
+4. Interaction & HUD Logic
+Glassmorphism: All cards must have backdrop-filter: blur(12px).
+
+Glow Animation: On hover, cards should increase border-brightness and add a soft blue outer glow.
+
+Responsive Menu: A mobile hamburger menu that slides in from the right with a 90% width.
