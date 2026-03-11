@@ -10,10 +10,10 @@
 ############################
 
 # Name of website
-title: SHANGHAI TACOM | Leading IT Solutions & System Integration
-# Your name to show in the footer
-author: SHANGHAI TACOM
+title: Tacom
 
+# Your name to show in the footer
+author: Tacom
 
 ###############################################
 # --- List of links in the navigation bar --- #
@@ -127,7 +127,7 @@ edit_page_button: true
 navbar-var-length: false
 
 # The keywords to associate with your website, for SEO purposes
-keywords: "SHANGHAI TACOM, System Integration, Network Security, Cloud Computing, IT Services, Managed IT, Digital Transformation"
+#keywords: "my,list,of,keywords"
 
 ######################################
 # --- Colours / background image --- #
@@ -158,12 +158,12 @@ footer-hover-col: "#165DFF"
 #mobile-theme-col: "#0085A1"
 
 # For any extra visual customization, you can include additional CSS files in every page on your site. List any custom CSS files here
-site-css:
-  - "/assets/css/design-system.css"
+#site-css:
+#  - "/assets/css/custom-styles.css"
 
 # If you have common JavaScript files that should be included in every page, list them here
-site-js:
-  - "/assets/js/design-system.js"
+#site-js:
+#  - "/assets/js/custom-script.js"
 
 #################################
 # --- Web Analytics Section --- #
