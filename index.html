@@ -336,14 +336,8 @@
     <section class="section" id="news-preview">
         <div class="container">
             <h2>Latest News</h2>
-            <div class="log" style="background:var(--surface-2); padding:16px;">
-                <div class="timestamp" style="color:var(--text-dim);">[2026-03-04 09:12]</div>
-                SpaceX IPO: Status update received from exchange node.
-            </div>
-            <div class="log" style="background:var(--surface-2); padding:16px;">
-                <div class="timestamp" style="color:var(--text-dim);">[2026-02-27 16:45]</div>
-                AI Dynamic Reports: Analysis pipeline initialized.
-            </div>
+            <!-- dynamic list will be injected here -->
+            <div id="news-list"></div>
             <p style="text-align:center; margin-top:24px;"><a href="news.html" class="btn-primary">View All News</a></p>
         </div>
     </section>
@@ -352,6 +346,54 @@
         document.getElementById('menuBtn').addEventListener('click', function(){
             document.getElementById('mobileNav').classList.toggle('open');
         });
+
+        async function loadTechNews() {
+            // English tech feed; we use a CORS proxy so that the source
+            // can be blocked by China but the proxy domain (e.g. allorigins)
+            // is reachable. Replace the proxy URL with one of your own if
+            // you host a server-side relay.
+            const proxy = 'https://api.allorigins.win/raw?url=';
+            // here we're using Google News english tech, but you could swap
+            // any RSS&mdash;TechCrunch, Wired, etc.
+            const source = encodeURIComponent('https://news.google.com/rss/topics/CAAqBwgKMJmW0wswvJf7Ag?hl=en-US&gl=US&ceid=US:en');
+
+            try {
+                const res = await fetch(proxy + source);
+                const text = await res.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "application/xml");
+                const items = Array.from(xml.querySelectorAll('item')).slice(0,3);
+                const container = document.getElementById('news-list');
+                container.innerHTML = '';
+                items.forEach(item => {
+                    const log = document.createElement('div');
+                    log.className = 'log';
+                    log.style.background = 'var(--surface-2)';
+                    log.style.padding = '16px';
+                    const ts = document.createElement('div');
+                    ts.className = 'timestamp';
+                    ts.style.color = 'var(--text-dim)';
+                    ts.textContent = '[' + new Date(item.querySelector('pubDate').textContent).toLocaleString() + ']';
+                    const a = document.createElement('a');
+                    a.href = item.querySelector('link').textContent;
+                    a.textContent = item.querySelector('title').textContent;
+                    a.target = '_blank';
+                    a.style.color = 'var(--text-prose)';
+                    a.style.textDecoration = 'none';
+                    log.appendChild(ts);
+                    log.appendChild(a);
+                    container.appendChild(log);
+                });
+            } catch (e) {
+                const container = document.getElementById('news-list');
+                container.textContent = 'Could not load news.';
+                console.error(e);
+            }
+        }
+
+        loadTechNews();
+        // refresh periodically
+        // setInterval(loadTechNews, 10 * 60 * 1000);
     </script>
 
     <footer style="background: var(--surface-1); padding: 24px 0; text-align: center; font-size:0.9rem;">
