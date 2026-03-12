@@ -355,7 +355,7 @@
             const proxy = 'https://api.allorigins.win/raw?url=';
             // here we're using Google News english tech, but you could swap
             // any RSS&mdash;TechCrunch, Wired, etc.
-            const source = encodeURIComponent('https://news.google.com/rss/topics/CAAqBwgKMJmW0wswvJf7Ag?hl=en-US&gl=US&ceid=US:en');
+            const source = encodeURIComponent('https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en');
 
             try {
                 const res = await fetch(proxy + source);

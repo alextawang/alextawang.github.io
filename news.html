@@ -65,19 +65,61 @@
     </header>
     <div class="container">
         <h1>Intelligence Log</h1>
-        <div class="log">
-            <div class="timestamp">[2026-03-04 09:12:00]</div>
-            SpaceX IPO: Status update received from exchange node.
-        </div>
-        <div class="log">
-            <div class="timestamp">[2026-02-27 16:45:23]</div>
-            AI Dynamic Reports: Analysis pipeline initialized.
+        <div id="dynamic-news-list">
+            <!-- Loading state -->
+            <div class="log">Fetching latest intelligence...</div>
         </div>
     </div>
     <script>
         document.getElementById('menuBtnNews').addEventListener('click', function(){
             document.getElementById('mobileNavNews').classList.toggle('open');
         });
+
+        async function loadAllTechNews() {
+            const proxy = 'https://api.allorigins.win/raw?url=';
+            const source = encodeURIComponent('https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en');
+
+            try {
+                const res = await fetch(proxy + source);
+                const text = await res.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "application/xml");
+                const items = Array.from(xml.querySelectorAll('item')).slice(0, 10);
+                const container = document.getElementById('dynamic-news-list');
+                
+                if (items.length === 0) {
+                    container.innerHTML = '<div class="log">No recent intelligence logs found.</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                items.forEach(item => {
+                    const log = document.createElement('div');
+                    log.className = 'log';
+                    
+                    const ts = document.createElement('div');
+                    ts.className = 'timestamp';
+                    ts.textContent = '[' + new Date(item.querySelector('pubDate').textContent).toLocaleString() + ']';
+                    
+                    const a = document.createElement('a');
+                    a.href = item.querySelector('link').textContent;
+                    a.textContent = item.querySelector('title').textContent;
+                    a.target = '_blank';
+                    a.style.color = 'var(--text-prose)';
+                    a.style.textDecoration = 'none';
+
+                    log.appendChild(ts);
+                    log.appendChild(a);
+                    container.appendChild(log);
+                });
+            } catch (e) {
+                const container = document.getElementById('dynamic-news-list');
+                container.innerHTML = '<div class="log">ERROR: Intelligence feed offline. Please check network connection.</div>';
+                console.error(e);
+            }
+        }
+
+        loadAllTechNews();
     </script>
     <footer>
         <div class="container">
