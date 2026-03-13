@@ -195,6 +195,29 @@
             transform: translateY(-4px);
             box-shadow: var(--shadow-glow);
         }
+
+        /* --- 4. ANIMATIONS & SKELETONS --- */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, var(--surface-2) 25%, #2d3e5a 50%, var(--surface-2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+            height: 80px;
+            margin: 16px 0;
+            border-radius: 8px;
+            border: var(--glass);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -336,8 +359,12 @@
     <section class="section" id="news-preview">
         <div class="container">
             <h2>Latest News</h2>
-            <!-- dynamic list will be injected here -->
-            <div id="news-list"></div>
+            <div id="news-list">
+                <!-- Initial HUD Skeletons -->
+                <div class="skeleton"></div>
+                <div class="skeleton"></div>
+                <div class="skeleton"></div>
+            </div>
             <p style="text-align:center; margin-top:24px;"><a href="news.html" class="btn-primary">View All News</a></p>
         </div>
     </section>
@@ -348,13 +375,15 @@
         });
 
         async function loadTechNews() {
-            // English tech feed; we use a CORS proxy so that the source
-            // can be blocked by China but the proxy domain (e.g. allorigins)
-            // is reachable. Replace the proxy URL with one of your own if
-            // you host a server-side relay.
+            const container = document.getElementById('news-list');
+            
+            // 1. Try to load from Local Storage for instant HUD feedback
+            const cachedNews = localStorage.getItem('tacom_tech_news');
+            if (cachedNews) {
+                renderNews(JSON.parse(cachedNews), true);
+            }
+
             const proxy = 'https://api.allorigins.win/raw?url=';
-            // here we're using Google News english tech, but you could swap
-            // any RSS&mdash;TechCrunch, Wired, etc.
             const source = encodeURIComponent('https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en');
 
             try {
@@ -362,32 +391,83 @@
                 const text = await res.text();
                 const parser = new DOMParser();
                 const xml = parser.parseFromString(text, "application/xml");
-                const items = Array.from(xml.querySelectorAll('item')).slice(0,3);
-                const container = document.getElementById('news-list');
+                const items = Array.from(xml.querySelectorAll('item')).slice(0,3).map(item => ({
+                    title: item.querySelector('title').textContent,
+                    link: item.querySelector('link').textContent,
+                    pubDate: item.querySelector('pubDate').textContent
+                }));
+
+                // 2. Cache the new data
+                localStorage.setItem('tacom_tech_news', JSON.stringify(items));
+                
+                // 3. Render fresh data
+                renderNews(items, false);
+
+            } catch (e) {
+                if (!cachedNews) {
+                    container.innerHTML = '<div class="log" style="color:var(--accent-telecom)">[!] OFFLINE: Intelligence feed unreachable.</div>';
+                }
+                console.error('HUD News Update Failed:', e);
+            }
+        }
+
+        function renderNews(items, isCached) {
+            const container = document.getElementById('news-list');
+            if (!isCached) container.innerHTML = ''; // Only clear if we have fresh data
+            
+            // If we are pushing fresh data over cache, we might want to only update if changed
+            // For now, simple replacement is smoother than 2s wait
+            if (!isCached) {
+                const fragment = document.createDocumentFragment();
+                items.forEach((item, index) => {
+                    const log = document.createElement('div');
+                    log.className = 'log fade-in';
+                    log.style.animationDelay = `${index * 0.1}s`;
+                    log.style.background = 'var(--surface-2)';
+                    log.style.padding = '16px';
+                    
+                    const ts = document.createElement('div');
+                    ts.className = 'timestamp';
+                    ts.textContent = '[' + new Date(item.pubDate).toLocaleString() + ']';
+                    
+                    const a = document.createElement('a');
+                    a.href = item.link;
+                    a.textContent = item.title;
+                    a.target = '_blank';
+                    a.style.color = 'var(--text-prose)';
+                    a.style.textDecoration = 'none';
+                    
+                    log.appendChild(ts);
+                    log.appendChild(a);
+                    fragment.appendChild(log);
+                });
+                container.innerHTML = '';
+                container.appendChild(fragment);
+            } else {
+                // If it's cached, we just show it immediately without animation delay for speed
                 container.innerHTML = '';
                 items.forEach(item => {
                     const log = document.createElement('div');
                     log.className = 'log';
                     log.style.background = 'var(--surface-2)';
                     log.style.padding = '16px';
+                    log.style.opacity = '0.7'; // slightly dimmed to show it's 'cached'
+                    
                     const ts = document.createElement('div');
                     ts.className = 'timestamp';
-                    ts.style.color = 'var(--text-dim)';
-                    ts.textContent = '[' + new Date(item.querySelector('pubDate').textContent).toLocaleString() + ']';
+                    ts.textContent = '[' + new Date(item.pubDate).toLocaleString() + ']';
+                    
                     const a = document.createElement('a');
-                    a.href = item.querySelector('link').textContent;
-                    a.textContent = item.querySelector('title').textContent;
+                    a.href = item.link;
+                    a.textContent = item.title;
                     a.target = '_blank';
                     a.style.color = 'var(--text-prose)';
                     a.style.textDecoration = 'none';
+                    
                     log.appendChild(ts);
                     log.appendChild(a);
                     container.appendChild(log);
                 });
-            } catch (e) {
-                const container = document.getElementById('news-list');
-                container.textContent = 'Could not load news.';
-                console.error(e);
             }
         }
 
