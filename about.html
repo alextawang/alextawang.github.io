@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TACOM | About</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #020617;
+            --surface-1: #0F172A;
+            --surface-2: #1E293B;
+            --primary-glow: #60A5FA;
+            --accent-telecom: #FB7185;
+            --text-prose: #F8FAFC;
+            --text-dim: #94A3B8;
+            --glass: 1px solid rgba(255,255,255,0.08);
+            --shadow-glow: 0 0 15px rgba(96,165,250,0.2);
+            --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
+            --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { box-sizing: border-box; }
+        body { margin:0; background:var(--bg-base); color:var(--text-prose); font-family:var(--font-primary); }
+        h1, h2 { font-family:var(--font-mono); }
+        .container { max-width:1200px; margin:0 auto; padding:0 24px; }
+        header { padding:20px 0; border-bottom:var(--glass); backdrop-filter:blur(12px); position:sticky; top:0; z-index:100; }
+        nav a { color:var(--text-prose); text-decoration:none; margin-left:20px; }
+        .menu-button { display:none; background:none; border:none; font-size:24px; color:var(--text-prose); }
+        .mobile-nav { position:fixed; top:0; right:-100%; width:90%; height:100%; background:var(--surface-1); backdrop-filter:blur(12px); transition:right .3s ease; padding:40px 20px; display:flex; flex-direction:column; }
+        .mobile-nav.open { right:0; }
+        .mobile-nav a { margin:12px 0; }
+        @media (max-width: 768px) {
+            .menu-button { display: block; }
+            .desktop-nav { display: none; }
+        }
+        footer { background: var(--surface-1); padding: 24px 0; text-align: center; font-size:0.9rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; font-size:24px;">TACOM</div>
+            <button class="menu-button" id="menuBtnAbout">☰</button>
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="solutions.html">Solutions</a>
+                <a href="cases.html">Cases</a>
+                <a href="news.html">News</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+        <nav class="mobile-nav" id="mobileNavAbout">
+            <a href="index.html">Home</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="cases.html">Cases</a>
+            <a href="news.html">News</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>About TACOM</h1>
+        <p>Founded in 2001, TACOM has been at the forefront of telecom engineering and enterprise IT. Our team combines hardware and software expertise to deliver scalable networks and defense-grade security.</p>
+        <ul>
+            <li>20+ years of experience</li>
+            <li>500+ clients worldwide</li>
+            <li>98% customer satisfaction</li>
+            <li>24/7 support node</li>
+        </ul>
+    </div>
+
+    <script>
+        document.getElementById('menuBtnAbout').addEventListener('click', function(){
+            document.getElementById('mobileNavAbout').classList.toggle('open');
+        });
+    </script>
+    <footer>
+        <div class="container">
+            &copy; 2026 TACOM. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>

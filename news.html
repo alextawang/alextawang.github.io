@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TACOM | News Feed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #020617;
+            --surface-1: #0F172A;
+            --surface-2: #1E293B;
+            --primary-glow: #60A5FA;
+            --accent-telecom: #FB7185;
+            --text-prose: #F8FAFC;
+            --text-dim: #94A3B8;
+            --glass: 1px solid rgba(255,255,255,0.08);
+            --shadow-glow: 0 0 15px rgba(96,165,250,0.2);
+            --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
+            --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { box-sizing: border-box; }
+        body { margin:0; background:var(--bg-base); color:var(--text-prose); font-family:var(--font-primary); }
+        h1, h2 { font-family:var(--font-mono); }
+        .container { max-width:1200px; margin:0 auto; padding:0 24px; }
+        header { padding:20px 0; border-bottom:var(--glass); backdrop-filter:blur(12px); position:sticky; top:0; z-index:100; }
+        nav a { color:var(--text-prose); text-decoration:none; margin-left:20px; }
+        .menu-button { display:none; background:none; border:none; font-size:24px; color:var(--text-prose); }
+        .mobile-nav { position:fixed; top:0; right:-100%; width:90%; height:100%; background:var(--surface-1); backdrop-filter:blur(12px); transition:right .3s ease; padding:40px 20px; display:flex; flex-direction:column; }
+        .mobile-nav.open { right:0; }
+        .mobile-nav a { margin:12px 0; }
+        @media (max-width: 768px) {
+            .menu-button { display: block; }
+            .desktop-nav { display: none; }
+        }
+        .log { background:var(--surface-2); padding:16px; margin:16px 0; border-radius:8px; font-family:var(--font-mono); font-size:0.9rem; }
+        .timestamp { color:var(--text-dim); }
+
+        /* --- SKELETONS & ANIMATIONS --- */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, var(--surface-2) 25%, #2d3e5a 50%, var(--surface-2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+            height: 80px;
+            margin: 16px 0;
+            border-radius: 8px;
+            border: var(--glass);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer { background: var(--surface-1); padding: 24px 0; text-align: center; font-size:0.9rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; font-size:24px;">TACOM</div>
+            <button class="menu-button" id="menuBtnNews">☰</button>
+            <nav class="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="solutions.html">Solutions</a>
+                <a href="cases.html">Cases</a>
+                <a href="news.html">News</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+        <nav class="mobile-nav" id="mobileNavNews">
+            <a href="index.html">Home</a>
+            <a href="solutions.html">Solutions</a>
+            <a href="cases.html">Cases</a>
+            <a href="news.html">News</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Latest Tech News</h1>
+        <div id="dynamic-news-list">
+            <!-- Loading Skeletons -->
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('menuBtnNews').addEventListener('click', function(){
+            document.getElementById('mobileNavNews').classList.toggle('open');
+        });
+
+        async function loadAllTechNews() {
+            const container = document.getElementById('dynamic-news-list');
+            
+            // 1. Instant Cache Load
+            const cached = localStorage.getItem('tacom_full_news');
+            if (cached) {
+                renderFullNews(JSON.parse(cached), true);
+            }
+
+            const proxy = 'https://api.allorigins.win/raw?url=';
+            const source = encodeURIComponent('https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en');
+
+            try {
+                const res = await fetch(proxy + source);
+                const text = await res.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "application/xml");
+                const items = Array.from(xml.querySelectorAll('item')).slice(0, 10).map(item => ({
+                    title: item.querySelector('title').textContent,
+                    link: item.querySelector('link').textContent,
+                    pubDate: item.querySelector('pubDate').textContent
+                }));
+                
+                // 2. Update Cache
+                localStorage.setItem('tacom_full_news', JSON.stringify(items));
+                
+                // 3. Dynamic Update
+                renderFullNews(items, false);
+
+            } catch (e) {
+                if (!cached) {
+                    container.innerHTML = '<div class="log" style="color:var(--accent-telecom)">[!] ERROR: Intelligence feed offline.</div>';
+                }
+                console.error(e);
+            }
+        }
+
+        function renderFullNews(items, isCached) {
+            const container = document.getElementById('dynamic-news-list');
+            if (!isCached) container.innerHTML = '';
+
+            const fragment = document.createDocumentFragment();
+            items.forEach((item, index) => {
+                const log = document.createElement('div');
+                log.className = isCached ? 'log' : 'log fade-in';
+                if (!isCached) log.style.animationDelay = `${index * 0.05}s`;
+                if (isCached) log.style.opacity = '0.7';
+
+                const ts = document.createElement('div');
+                ts.className = 'timestamp';
+                ts.textContent = '[' + new Date(item.pubDate).toLocaleString() + ']';
+                
+                const a = document.createElement('a');
+                a.href = item.link;
+                a.textContent = item.title;
+                a.target = '_blank';
+                a.style.color = 'var(--text-prose)';
+                a.style.textDecoration = 'none';
+
+                log.appendChild(ts);
+                log.appendChild(a);
+                fragment.appendChild(log);
+            });
+            
+            if (items.length > 0) {
+                container.innerHTML = '';
+                container.appendChild(fragment);
+            }
+        }
+
+        loadAllTechNews();
+    </script>
+    <footer>
+        <div class="container">
+            &copy; 2026 TACOM. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
