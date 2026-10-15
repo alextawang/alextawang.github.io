@@ -1,0 +1,557 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHANGHAI TACOM | 上海达康 - 领先的数字技术专家</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Microsoft YaHei', 'sans-serif'],
+            display: ['Space Grotesk', 'PingFang SC', 'sans-serif'],
+          },
+          colors: {
+            primary: '#00D9FF',
+            secondary: '#7000FF',
+            dark: '#0A0A0F',
+            darker: '#050508',
+            surface: '#151520',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'gradient': 'gradient 8s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            gradient: {
+              '0%, 100%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Reset some layout styles if nested in Jekyll */
+    .container.main-content {
+      max-width: none !important;
+      padding: 0 !important;
+      width: 100% !important;
+    }
+
+    body {
+      background-color: #0A0A0F !important;
+      color: #ffffff !important;
+      overflow-x: hidden;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .glass {
+      background: rgba(21, 21, 32, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #00D9FF 0%, #7000FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-gradient {
+      background:
+        radial-gradient(ellipse at top, rgba(112, 0, 255, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(0, 217, 255, 0.2) 0%, transparent 50%),
+        linear-gradient(rgba(10, 10, 15, 0.7), rgba(10, 10, 15, 0.7)),
+        url('/assets/img/shanghai-lujiazui.png') center/cover no-repeat;
+    }
+
+    .grid-pattern {
+      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 217, 255, 0.2);
+    }
+
+    .blob {
+      position: absolute;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: float 10s ease-in-out infinite;
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: linear-gradient(90deg, #00D9FF, #7000FF);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    /* Fix for Jekyll theme potential conflicts */
+    #main-nav,
+    footer.site-footer {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!-- Navigation -->
+  <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2 cursor-pointer group">
+          <div
+            class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+              </path>
+            </svg>
+          </div>
+          <span class="text-2xl font-display font-bold tracking-tight">SHANGHAI <span
+              class="gradient-text">TACOM</span></span>
+        </div>
+
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#solutions" class="nav-link text-gray-300 hover:text-white transition-colors">核心业务</a>
+          <a href="#advantages" class="nav-link text-gray-300 hover:text-white transition-colors">核心优势</a>
+          <a href="#about" class="nav-link text-gray-300 hover:text-white transition-colors">关于我们</a>
+          <button
+            class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-black transition-all duration-300 font-medium">
+            联系我们
+          </button>
+        </div>
+
+        <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden glass border-t border-gray-800">
+      <div class="px-6 py-4 space-y-4">
+        <a href="#solutions" class="block text-gray-300 hover:text-white">核心业务</a>
+        <a href="#advantages" class="block text-gray-300 hover:text-white">核心优势</a>
+        <a href="#about" class="block text-gray-300 hover:text-white">关于我们</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient grid-pattern">
+    <!-- Animated Blobs -->
+    <div class="blob w-96 h-96 bg-primary rounded-full top-20 -left-20 animate-pulse-slow"></div>
+    <div class="blob w-80 h-80 bg-secondary rounded-full bottom-20 -right-20 animate-pulse-slow"
+      style="animation-delay: 2s;"></div>
+    <div
+      class="blob w-64 h-64 bg-purple-500 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-slow"
+      style="animation-delay: 4s;"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
+      <div class="inline-flex items-center px-4 py-2 rounded-full glass mb-8 reveal">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse mr-2"></span>
+        <span class="text-sm text-gray-300">SHANGHAI TACOM - 上海达康</span>
+      </div>
+
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold leading-tight mb-6 reveal">
+        专业研发外包服务商<br>
+        <span class="gradient-text">移动通信集成专家</span>
+      </h1>
+
+      <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 reveal">
+        专注系统集成、网络安全、云计算与企业信息化服务，<br>
+        以专业技术赋能企业高质量发展。
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
+        <a href="#solutions"
+          class="px-8 py-4 rounded-full bg-gradient-to-r from-primary to-secondary text-black font-bold hover:shadow-lg hover:shadow-primary/50 transform hover:scale-105 transition-all duration-300">
+          了解解决方案
+        </a>
+        <a href="#about"
+          class="px-8 py-4 rounded-full glass text-white font-medium hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2 group">
+          关于我们
+          <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none"
+            stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 reveal">
+        <div class="text-center">
+          <div class="text-4xl font-display font-bold gradient-text counter" data-target="150">0</div>
+          <div class="text-gray-400 mt-2">已交付项目</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-display font-bold gradient-text counter" data-target="98">0</div>
+          <div class="text-gray-400 mt-2">客户满意度 %</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-display font-bold gradient-text counter" data-target="12">0</div>
+          <div class="text-gray-400 mt-2">行业经验 (年)</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-display font-bold gradient-text counter" data-target="24">0</div>
+          <div class="text-gray-400 mt-2">/7 全天候支持</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3">
+        </path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Services Section (Solutions) -->
+  <section id="solutions" class="py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-20 reveal">
+        <h2 class="text-4xl md:text-5xl font-display font-bold mb-4">核心<span class="gradient-text">业务</span></h2>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto">为企事业单位提供一站式 IT 服务，涵盖基础架构到数字化转型全链路</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Service Card 1 -->
+        <div class="group relative p-8 rounded-2xl glass card-hover reveal cursor-pointer overflow-hidden">
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          </div>
+          <div class="relative z-10">
+            <div
+              class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                </path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">系统集成服务</h3>
+            <p class="text-gray-400 mb-4">System Integration Services</p>
+            <p class="text-sm text-gray-500">一站式 IT 基础架构建设与集成，包括网络工程、服务器部署、存储及灾备方案。</p>
+          </div>
+        </div>
+
+        <!-- Service Card 2 -->
+        <div class="group relative p-8 rounded-2xl glass card-hover reveal cursor-pointer overflow-hidden">
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-secondary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          </div>
+          <div class="relative z-10">
+            <div
+              class="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <svg class="w-7 h-7 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z">
+                </path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">网络安全方案</h3>
+            <p class="text-gray-400 mb-4">Cybersecurity Solutions</p>
+            <p class="text-sm text-gray-500">等保合规、安全防护、数据安全，为企业信息资产提供全方位安全保障。</p>
+          </div>
+        </div>
+
+        <!-- Service Card 3 -->
+        <div class="group relative p-8 rounded-2xl glass card-hover reveal cursor-pointer overflow-hidden">
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          </div>
+          <div class="relative z-10">
+            <div
+              class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z">
+                </path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">云计算与虚拟化</h3>
+            <p class="text-gray-400 mb-4">Cloud Computing</p>
+            <p class="text-sm text-gray-500">上云规划、服务器部署、混合云架构，助力企业灵活扩展数字基础设施。</p>
+          </div>
+        </div>
+
+        <!-- Service Card 4 -->
+        <div class="group relative p-8 rounded-2xl glass card-hover reveal cursor-pointer overflow-hidden">
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          </div>
+          <div class="relative z-10">
+            <div
+              class="w-14 h-14 rounded-xl bg-pink-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <svg class="w-7 h-7 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z">
+                </path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">IT 技术服务</h3>
+            <p class="text-gray-400 mb-4">IT Technical Services</p>
+            <p class="text-sm text-gray-500">运维外包、系统开发、数字化升级，全面支撑企业信息化建设与持续运营。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advantages Section -->
+  <section id="advantages" class="py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-dark via-surface to-dark"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+      <div class="text-center mb-20 reveal">
+        <h2 class="text-4xl md:text-5xl font-display font-bold mb-4">我们的<span class="gradient-text">优势</span></h2>
+        <div class="w-20 h-1.5 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="glass p-10 rounded-3xl text-center card-hover reveal">
+          <div class="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4">专业技术团队</h3>
+          <p class="text-gray-400">多年行业深耕，拥有多名认证工程师，从方案设计到落地交付全程专业支撑。</p>
+        </div>
+
+        <div class="glass p-10 rounded-3xl text-center card-hover reveal" style="transition-delay: 100ms;">
+          <div class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4">全流程服务体系</h3>
+          <p class="text-gray-400">方案咨询 → 设计实施 → 运维保障一站式闭环服务，降低企业管理成本。</p>
+        </div>
+
+        <div class="glass p-10 rounded-3xl text-center card-hover reveal" style="transition-delay: 200ms;">
+          <div class="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4">7×24 小时保障</h3>
+          <p class="text-gray-400">全天候快速响应机制，企业级 SLA 承诺，确保核心业务系统稳定可靠运行。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal">
+          <h2 class="text-4xl md:text-5xl font-display font-bold mb-6">
+            关于 <span class="gradient-text">SHANGHAI TACOM</span>
+          </h2>
+          <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+            上海达康（SHANGHAI TACOM）是一家专业从事软硬件研发外包服务与移动通信系统集成的专家级企业。
+          </p>
+          <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+            我们致力于为全球客户提供高质量的数字化解决方案，从智能城市建设到复杂的轨道交通通信工程，我们凭借卓越的研发实力和深厚的行业经验，不断推动行业标准。
+          </p>
+
+          <div class="grid grid-cols-2 gap-6">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1">敏捷开发</h4>
+                <p class="text-sm text-gray-500">快速迭代与持续交付</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1">流程透明</h4>
+                <p class="text-sm text-gray-500">项目进度全程可见</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative reveal">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-3xl transform rotate-3 opacity-20">
+          </div>
+          <div class="relative glass rounded-3xl p-8 overflow-hidden">
+            <img src="/assets/img/shanghai-lujiazui.png" alt="Shanghai TACOM"
+              class="rounded-2xl opacity-80 hover:scale-105 transition-transform duration-700">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-800 py-12 bg-darker">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <div class="flex flex-col items-center mb-8">
+        <div
+          class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <span class="text-2xl font-display font-bold">SHANGHAI <span class="gradient-text">TACOM</span></span>
+        <p class="text-gray-500 mt-4">Building Digital Excellence Since 2012</p>
+      </div>
+      <div class="border-t border-gray-800 pt-8">
+        <p class="text-gray-600 text-sm">© 2026 SHANGHAI TACOM. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Register ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-lg');
+        navbar.classList.add('bg-darker/90');
+      } else {
+        navbar.classList.remove('shadow-lg');
+        navbar.classList.remove('bg-darker/90');
+      }
+    });
+
+    // Reveal animations
+    gsap.utils.toArray('.reveal').forEach((element, i) => {
+      gsap.fromTo(element,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: element,
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    });
+
+    // Counter animation
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-target'));
+      gsap.to(counter, {
+        innerHTML: target,
+        duration: 2,
+        snap: { innerHTML: 1 },
+        scrollTrigger: {
+          trigger: counter,
+          start: "top 85%"
+        }
+      });
+    });
+
+    // Parallax effect for blobs
+    document.addEventListener('mousemove', (e) => {
+      const blobs = document.querySelectorAll('.blob');
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+
+      blobs.forEach((blob, index) => {
+        const speed = (index + 1) * 20;
+        gsap.to(blob, {
+          x: (x - 0.5) * speed,
+          y: (y - 0.5) * speed,
+          duration: 1,
+          ease: "power2.out"
+        });
+      });
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+          document.getElementById('mobileMenu').classList.add('hidden');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
