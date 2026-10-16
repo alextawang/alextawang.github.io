@@ -109,22 +109,35 @@
             // 1. Instant Cache Load
             const cached = localStorage.getItem('tacom_full_news');
             if (cached) {
-                renderFullNews(JSON.parse(cached), true);
+                try {
+                    const cachedItems = JSON.parse(cached);
+                    if (Array.isArray(cachedItems) && cachedItems.length > 0) {
+                        renderFullNews(cachedItems, true);
+                    }
+                } catch (e) {
+                    localStorage.removeItem('tacom_full_news');
+                    console.warn('Discarding invalid cached news:', e);
+                }
             }
 
-            const proxy = 'https://api.allorigins.win/raw?url=';
-            const source = encodeURIComponent('https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en');
-
             try {
-                const res = await fetch(proxy + source);
-                const text = await res.text();
-                const parser = new DOMParser();
-                const xml = parser.parseFromString(text, "application/xml");
-                const items = Array.from(xml.querySelectorAll('item')).slice(0, 10).map(item => ({
-                    title: item.querySelector('title').textContent,
-                    link: item.querySelector('link').textContent,
-                    pubDate: item.querySelector('pubDate').textContent
-                }));
+                const source = encodeURIComponent('https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en');
+                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${source}`);
+                if (!res.ok) throw new Error(`News feed request failed (${res.status})`);
+
+                const feed = await res.json();
+                if (feed.status !== 'ok' || !Array.isArray(feed.items)) {
+                    throw new Error('News feed returned an invalid response');
+                }
+                const items = feed.items
+                    .filter(item => item && item.title && item.link && item.pubDate)
+                    .slice(0, 10)
+                    .map(item => ({
+                        title: item.title,
+                        link: item.link,
+                        pubDate: item.pubDate
+                    }));
+                if (items.length === 0) throw new Error('News feed contained no usable articles');
                 
                 // 2. Update Cache
                 localStorage.setItem('tacom_full_news', JSON.stringify(items));
